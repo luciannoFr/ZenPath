@@ -1,11 +1,17 @@
-import { FloatingLabel, Form } from "react-bootstrap";
-import "./register.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FloatingLabel, Form } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import "./register.css";
 
 export const Register = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({
+    nombre: "",
+    apellido: "",
+    usuario: "",
+    correo: "",
+    contrasenia: "",
+  });
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -17,6 +23,7 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const req = await fetch("http://localhost:3000/register", {
       method: "POST",
       body: JSON.stringify(form),
@@ -36,68 +43,88 @@ export const Register = () => {
 
   return (
     <main className="register-container">
-      <div className="register-header">
-        <h2 className="register-title">Registro</h2>
-        <span>Complete los datos para crear un usuario</span>
-      </div>
+      <div className="blur-background"></div>
+
       <Form className="register-form" onSubmit={handleSubmit}>
-        <FloatingLabel controlId="nombre" label="Nombre" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="john"
-            name="nombre"
-            onChange={handleChange}
+        <div className="register-header">
+          <img
+            src="./public/circulo-de-usuario.svg"
+            alt="User Icon"
           />
-        </FloatingLabel>
+          <h2 className="register-title">Registro</h2>
+          <span>Complete los datos para crear un usuario</span>
+        </div>
 
-        <FloatingLabel controlId="apellido" label="Apellido" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Doe"
-            name="apellido"
-            onChange={handleChange}
-          />
-        </FloatingLabel>
+        <div className="input-container">
+          <FloatingLabel controlId="nombre" label="Nombre" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="John"
+              name="nombre"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+         
+        </div>
 
-        <FloatingLabel
-          controlId="usuario"
-          label="Nombre de Usuario"
-          className="mb-3"
-        >
-          <Form.Control
-            type="text"
-            placeholder="example123"
-            name="usuario"
-            onChange={handleChange}
-          />
-        </FloatingLabel>
+        <div className="input-container">
+          <FloatingLabel controlId="apellido" label="Apellido" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Doe"
+              name="apellido"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+        </div>
 
-        <FloatingLabel controlId="correo" label="Correo" className="mb-3">
-          <Form.Control
-            type="email"
-            placeholder="name@example.com"
-            name="correo"
-            onChange={handleChange}
-          />
-        </FloatingLabel>
+        <div className="input-container">
+          <FloatingLabel
+            controlId="usuario"
+            label="Nombre de Usuario"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              placeholder="example123"
+              name="usuario"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+        </div>
 
-        <FloatingLabel
-          controlId="contrasenia"
-          label="Contraseña"
-          className="mb-3 password-input"
-        >
-          <Form.Control
-            type="password"
-            placeholder="name12312"
-            name="contrasenia"
-            onChange={handleChange}
-          />
-        </FloatingLabel>
+        <div className="input-container">
+          <FloatingLabel controlId="correo" label="Correo" className="mb-3">
+            <Form.Control
+              type="email"
+              placeholder="name@example.com"
+              name="correo"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+        </div>
+
+        <div className="input-container">
+          <FloatingLabel
+            controlId="contrasenia"
+            label="Contraseña"
+            className="mb-3 password-input"
+          >
+            <Form.Control
+              type="password"
+              placeholder="name12312"
+              name="contrasenia"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+        </div>
 
         <button className="button-register" type="submit">
-          Registrarse
+        <Link className="Register" to={"/login"}>Regístrate</Link>
         </button>
+
       </Form>
     </main>
   );
 };
+
