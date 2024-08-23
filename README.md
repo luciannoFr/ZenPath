@@ -83,3 +83,7 @@ Sigue estos pasos para instalar y ejecutar el proyecto localmente:
 ## Ambiente Educativo
 
 Este proyecto ha sido desarrollado como parte de una hackatón en un entorno educativo. El objetivo principal es aprender y experimentar con nuevas tecnologías y metodologías en un contexto colaborativo. Apreciamos la participación de todos los miembros del equipo y los comentarios constructivos para seguir mejorando y aprendiendo, muchas gracias.
+
+##Links de gestion de proyecto(Trello y Jira)
+- Trello: https://trello.com/b/SsHXff2V/zenpath
+- Jira: https://refugioparanimales.atlassian.net/jira/software/projects/HAC/boards/2/timeline?shared=&atlOrigin=eyJpIjoiMDE1YzczMzlkYTI1NDg4Nzk0YjA0MzEwNDJmMTU3ODQiLCJwIjoiaiJ9
