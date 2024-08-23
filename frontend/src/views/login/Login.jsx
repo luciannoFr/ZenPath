@@ -53,7 +53,7 @@ export const Login = () => {
       <Form className="login-form" onSubmit={handleSubmit}>
       <div className="login-header">
       <img
-            src="./public/img/circulo-de-usuario.svg"
+            src="./public/circulo-de-usuario.svg"
             alt="User Icon"
           />
 
@@ -74,7 +74,7 @@ export const Login = () => {
             />
           </FloatingLabel>
           <img
-            src="./public/img/usuario.svg"
+            src="./public/usuario.svg"
             alt="User Icon"
             className="input-icon"
           />
@@ -94,7 +94,7 @@ export const Login = () => {
             />
           </FloatingLabel>
           <img
-            src="./public/img/password.svg"
+            src="./public/password.svg"
             alt="Password Icon"
             className="input-icon"
           />
