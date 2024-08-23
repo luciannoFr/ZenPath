@@ -48,43 +48,63 @@ export const Login = () => {
 
   return (
     <main className="login-container">
-      <div className="login-header">
-        <h2 className="login-title">Login</h2>
-        <span></span>
-      </div>
+      <div className="blur-background"></div>
+
       <Form className="login-form" onSubmit={handleSubmit}>
-        <FloatingLabel
-          controlId="usuario"
-          label="Nombre de Usuario"
-          className="mb-3"
-        >
-          <Form.Control
-            type="text"
-            placeholder="example123"
-            name="usuario"
-            onChange={handleChange}
+      <div className="login-header">
+      <img
+            src="./public/img/circulo-de-usuario.svg"
+            alt="User Icon"
           />
-        </FloatingLabel>
 
-        <FloatingLabel
-          controlId="contrasenia"
-          label="Contraseña"
-          className="mb-3 password-input"
-        >
-          <Form.Control
-            type="password"
-            placeholder="name12312"
-            name="contrasenia"
-            onChange={handleChange}
+        <h2 className="login-title">Login</h2>
+        
+      </div>
+        <div className="input-container">
+          <FloatingLabel
+            controlId="usuario"
+            label="Nombre de Usuario"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              placeholder="example123"
+              name="usuario"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+          <img
+            src="./public/img/usuario.svg"
+            alt="User Icon"
+            className="input-icon"
           />
-        </FloatingLabel>
+        </div>
 
-        <span className="login-label">
-          ¿No tienes una cuenta? <Link to={"/register"}>Registrate</Link>
-        </span>
+        <div className="input-container">
+          <FloatingLabel
+            controlId="contrasenia"
+            label="Contraseña"
+            className="mb-3 password-input"
+          >
+            <Form.Control
+              type="password"
+              placeholder="name12312"
+              name="contrasenia"
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+          <img
+            src="./public/img/password.svg"
+            alt="Password Icon"
+            className="input-icon"
+          />
+        </div>
 
         <button className="button-login" type="submit">
           Iniciar Sesión
+        </button>
+        <button className="button-login" type="submit">
+          <Link className="Register" to={"/register"}>Regístrate</Link>
         </button>
       </Form>
     </main>
