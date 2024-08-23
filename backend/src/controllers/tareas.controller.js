@@ -1,7 +1,7 @@
 import { connectDB } from "../db/database.js";
 import { validarJWT } from "../helpers/validarJWT.js";
 
-export const obtenerTareas = async (req, res) => {
+export const obtenerVideos = async (req, res) => {
   const connection = await connectDB();
 
   // Comentamos las líneas que validan el token y la autorización
@@ -20,25 +20,23 @@ export const obtenerTareas = async (req, res) => {
 
     return res.json(results);
   } catch (error) {
-    console.error("Error al obtener las tareas:", error);
-    return res.status(500).json({ msg: "Error al obtener las tareas" });
+    console.error("Error al obtener los videos:", error);
+    return res.status(500).json({ msg: "Error al obtener los videos" });
   }
 };
 
-export const obtenerTarea = async (req, res) => {
+export const obtenerVideo = async (req, res) => {
   const { id } = req.params;
 
   const connection = await connectDB();
 
-  const [results] = await connection.query("SELECT * FROM TAREAS WHERE id=?", [
-    id,
-  ]);
+  const [results] = await connection.query("SELECT * FROM videos WHERE VideoID=?", [id]);
 
   return res.json(results[0]);
 };
 
-export const crearTarea = async (req, res) => {
-  const { Title, Description, link } = req.body;
+export const crearVideo = async (req, res) => {
+  const { Title, Description, URL } = req.body;
 
   // Tomamos el token desde los headers de la peticion de la siguiente manera:
   const token = req.headers.token;
@@ -46,7 +44,7 @@ export const crearTarea = async (req, res) => {
   // En caso de que no exista el token, retornamos un mensaje de error.
   if (!token) {
     return res.status(401).json({
-      msg: "No estas autorizado para realizar esta acción",
+      msg: "No estás autorizado para realizar esta acción",
     });
   } else {
     // Utilizamos el helper para validar el token.
@@ -54,25 +52,27 @@ export const crearTarea = async (req, res) => {
 
     if (!usuario)
       return res.status(403).json({
-        msg: "No estas autorizado para realizar esta accion",
+        msg: "No estás autorizado para realizar esta acción",
       });
 
     const connection = await connectDB();
 
     // Ejecutamos la consulta de inserción.
     await connection.query(
-      "INSERT INTO `videos`(`Title`, `URL`, `Description`) VALUES (?,?,?)",[Title, link ,Description]);
+      "INSERT INTO videos (Title, URL, Description) VALUES (?, ?, ?)",
+      [Title, URL, Description]
+    );
 
     // Respondemos al cliente.
     res.json({
-      msg: "Tarea creada",
+      msg: "Video creado",
     });
   }
 };
 
-export const actualizarTarea = async (req, res) => {
+export const actualizarVideo = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion } = req.body;
+  const { Title, Description, URL } = req.body;
 
   const token = req.headers.token;
   const usuario = await validarJWT(token);
@@ -81,20 +81,20 @@ export const actualizarTarea = async (req, res) => {
 
   if (!usuario)
     return res.status(403).json({
-      msg: "No estas autorizado para realizar esta accion",
+      msg: "No estás autorizado para realizar esta acción",
     });
 
   await connection.query(
-    "UPDATE TAREAS SET nombre=?, descripcion=? WHERE id=?",
-    [nombre, descripcion, id]
+    "UPDATE videos SET Title=?, Description=?, URL=? WHERE VideoID=?",
+    [Title, Description, URL, id]
   );
 
   res.json({
-    msg: "Tarea actualizada",
+    msg: "Video actualizado",
   });
 };
 
-export const eliminarTarea = async (req, res) => {
+export const eliminarVideo = async (req, res) => {
   const { id } = req.params;
 
   const token = req.headers.token;
@@ -104,12 +104,12 @@ export const eliminarTarea = async (req, res) => {
 
   if (!usuario)
     return res.status(403).json({
-      msg: "No estas autorizado para realizar esta accion",
+      msg: "No estás autorizado para realizar esta acción",
     });
 
-  await connection.query("DELETE FROM TAREAS WHERE id=?", [id]);
+  await connection.query("DELETE FROM videos WHERE VideoID=?", [id]);
 
   res.json({
-    msg: "Tarea eliminada",
+    msg: "Video eliminado",
   });
 };

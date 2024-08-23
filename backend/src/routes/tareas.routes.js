@@ -1,23 +1,24 @@
 import {
-  obtenerTareas,
-  crearTarea,
-  obtenerTarea,
-  actualizarTarea,
-  eliminarTarea,
+  obtenerVideos,
+  obtenerVideo,
+  crearVideo,
+  actualizarVideo,
+  eliminarVideo
+
 } from "../controllers/tareas.controller.js";
 
 import { Router } from "express";
 
 const tareasRouter = Router();
 
-tareasRouter.get("/tareas", obtenerTareas);
+tareasRouter.get("/tareas", obtenerVideos);
 
-tareasRouter.get("/tareas/:id", obtenerTarea);
+tareasRouter.get("/tareas/:id", obtenerVideo);
 
-tareasRouter.post("/tareas", crearTarea);
+tareasRouter.post("/tareas", crearVideo);
 
-tareasRouter.put("/tareas/:id", actualizarTarea);
+tareasRouter.put("/tareas/:id", actualizarVideo);
 
-tareasRouter.delete("/tareas/:id", eliminarTarea);
+tareasRouter.delete("/tareas/:id", eliminarVideo);
 
 export { tareasRouter };
