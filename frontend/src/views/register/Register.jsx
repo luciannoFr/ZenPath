@@ -35,30 +35,12 @@ export const Register = () => {
   };
 
   return (
-    <main className="register-container">
+    <main className="register-container ">
       <div className="register-header">
         <h2 className="register-title">Registro</h2>
         <span>Complete los datos para crear un usuario</span>
       </div>
       <Form className="register-form" onSubmit={handleSubmit}>
-        <FloatingLabel controlId="nombre" label="Nombre" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="john"
-            name="nombre"
-            onChange={handleChange}
-          />
-        </FloatingLabel>
-
-        <FloatingLabel controlId="apellido" label="Apellido" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Doe"
-            name="apellido"
-            onChange={handleChange}
-          />
-        </FloatingLabel>
-
         <FloatingLabel
           controlId="usuario"
           label="Nombre de Usuario"
@@ -92,6 +74,18 @@ export const Register = () => {
             name="contrasenia"
             onChange={handleChange}
           />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="confirmarContrasenia"
+          label="Confirmar Contraseña"
+          className="mb-3 password-input"
+        >
+
+        </FloatingLabel>
+        <FloatingLabel type="number" controlId="number_cell"
+        label="Número de Celular"
+        className="mb-3">
+
         </FloatingLabel>
 
         <button className="button-register" type="submit">
