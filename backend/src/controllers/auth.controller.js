@@ -4,25 +4,24 @@ import { generarJWT } from "../helpers/generarJWT.js";
 
 export const register = async (req, res) => {
   // Desestructuramos los datos que vienen del cuerpo de la peticion.
-  const { nombre, apellido, usuario, correo, contrasenia } = req.body;
+  const { usuario, email, number_cell, contrasenia } = req.body;
 
   //Hacemos la conexion a la base de datos.
   const connection = await connectDB();
-
+  const userio=1;
   // Creamos la consulta.
   const sql =
-    "INSERT INTO USUARIOS (nombre, apellido, usuario, correo, contrasenia) VALUES (?,?,?,?,?)";
+    "INSERT INTO Users (Username, passwordHash, email, number_cell, type_user) VALUES (?,?,?,?,?)";
 
   // Encriptamos la contraseña utilizando la libreria bcrypt.
   const hashContrasenia = bcrypt.hashSync(contrasenia, 10); // El segundo parametro es el numero de veces que se ejecuta el algoritmo de encriptación.
 
   // Ejecutamos la consulta.
   await connection.query(sql, [
-    nombre,
-    apellido,
     usuario,
-    correo,
     hashContrasenia,
+    email,
+    number_cell
   ]);
 
   // Respondemos a nuestro cliente

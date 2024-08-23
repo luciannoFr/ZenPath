@@ -8,7 +8,7 @@ const connectDB = async () => {
       host: "localhost",
       user: "root",
       password: "",
-      database: "auth",
+      database: "ZenPath",
     });
   } catch (error) {
     console.log(error);
