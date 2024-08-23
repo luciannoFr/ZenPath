@@ -3,70 +3,72 @@ import bcrypt from "bcrypt";
 import { generarJWT } from "../helpers/generarJWT.js";
 
 export const register = async (req, res) => {
-  // Desestructuramos los datos que vienen del cuerpo de la peticion.
-  const { nombre, apellido, usuario, correo, contrasenia } = req.body;
+  const { username, password, email, phone } = req.body;
 
-  //Hacemos la conexion a la base de datos.
   const connection = await connectDB();
 
-  // Creamos la consulta.
+  // Encriptar la contraseña
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
   const sql =
-    "INSERT INTO USUARIOS (nombre, apellido, usuario, correo, contrasenia) VALUES (?,?,?,?,?)";
+    "INSERT INTO users (username, passwordHash, email, number_cell) VALUES (?,?,?,?)";
 
-  // Encriptamos la contraseña utilizando la libreria bcrypt.
-  const hashContrasenia = bcrypt.hashSync(contrasenia, 10); // El segundo parametro es el numero de veces que se ejecuta el algoritmo de encriptación.
-
-  // Ejecutamos la consulta.
-  await connection.query(sql, [
-    nombre,
-    apellido,
-    usuario,
-    correo,
-    hashContrasenia,
-  ]);
-
-  // Respondemos a nuestro cliente
-  res.json({
-    msg: "Registrado correctamente",
-  });
+  try {
+    await connection.query(sql, [username, hashedPassword, email, phone]);
+    res.json({ msg: "Registrado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al registrar el usuario" });
+  }
 };
 
+
 export const login = async (req, res) => {
-  const { usuario, contrasenia } = req.body;
+  const { username, password } = req.body;
 
-  const connection = await connectDB();
+  try {
+    const connection = await connectDB();
 
-  // Buscamos el usuario en la bd.
-  const sql = "SELECT * FROM USUARIOS WHERE USUARIO=? LIMIT 1";
+    // Buscamos el usuario en la base de datos.
+    const sql = "SELECT * FROM users WHERE Username=? LIMIT 1";
+    const [results] = await connection.query(sql, [username]);
 
-  const [buscarUsuario] = await connection.query(sql, usuario);
+    // Imprimir los resultados de la consulta para depuración.
+    console.log("Resultados de la consulta:", results);
 
-  // En caso de que no se encuentre ningun usuario, retornamos un error.
-  if (!buscarUsuario[0]) {
-    return res.status(400).json({
-      msg: "El usuario no existe",
-    });
+    // Verificamos si se encontró el usuario.
+    if (!results[0]) {
+      return res.status(400).json({ msg: "El username no existe" });
+    }
+
+    // Extraemos el hash de la contraseña.
+    const passwordHash = results[0].PasswordHash;
+
+    // Verificamos que el hash de la contraseña esté presente.
+    if (!passwordHash) {
+      return res.status(500).json({ msg: "Error al obtener el hash de la contraseña" });
+    }
+
+    // Imprime la contraseña ingresada y el hash almacenado para verificar.
+    console.log("Contraseña ingresada:", password);
+    console.log("Hash almacenado:", passwordHash);
+
+    // Comparamos las contraseñas.
+    const validarPassword = bcrypt.compareSync(password, passwordHash);
+
+    // En caso de que no coincidan, retornamos un error.
+    if (!validarPassword) {
+      return res.status(401).json({ msg: "El usuario o contraseña no coinciden" });
+    }
+
+    // Generamos el token con el id del usuario.
+    const token = await generarJWT({ id: results[0].UserID });
+
+    // Retornamos el token con un mensaje al cliente.
+    return res.json({ msg: "Inicio de sesión exitoso", token });
+
+  } catch (error) {
+    console.error("Error en el login:", error);
+    return res.status(500).json({ msg: "Error en el servidor" });
   }
-
-  // Comparamos las contraseñas con el metodo compareSync que nos devolvera un true o false.
-  const validarContrasenia = bcrypt.compareSync(
-    contrasenia,
-    buscarUsuario[0].contrasenia
-  );
-
-  // En caso de que no coincidan, retornamos un error sin dar información especifica de lo que fallo.
-  if (!validarContrasenia) {
-    return res.status(401).json({
-      msg: "El usuario o contraseña no coiciden",
-    });
-  }
-
-  // Hacemos uso del helper para generar el token y le pasamos el id.
-  const token = await generarJWT({ id: buscarUsuario[0].id });
-
-  //Retornamos el token con un mensaje al cliente.
-  return res.json({
-    msg: "Inicio de sesión exitoso",
-    token,
-  });
 };

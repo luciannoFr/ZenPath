@@ -69,7 +69,7 @@ export const Login = () => {
             <Form.Control
               type="text"
               placeholder="example123"
-              name="usuario"
+              name="username"
               onChange={handleChange}
             />
           </FloatingLabel>
@@ -82,14 +82,14 @@ export const Login = () => {
 
         <div className="input-container">
           <FloatingLabel
-            controlId="contrasenia"
+            controlId="password"
             label="Contraseña"
             className="mb-3 password-input"
           >
             <Form.Control
               type="password"
               placeholder="name12312"
-              name="contrasenia"
+              name="password"
               onChange={handleChange}
             />
           </FloatingLabel>

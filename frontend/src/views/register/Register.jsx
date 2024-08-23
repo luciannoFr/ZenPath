@@ -35,7 +35,7 @@ export const Register = () => {
     const res = await req.json();
 
     if (req.ok) {
-      navigate("/");
+      navigate("/login");
     }
 
     alert(res.msg);
@@ -56,11 +56,11 @@ export const Register = () => {
         </div>
 
         <div className="input-container">
-          <FloatingLabel controlId="nombre" label="Nombre" className="mb-3">
+          <FloatingLabel controlId="Username" label="Username" className="mb-3">
             <Form.Control
               type="text"
               placeholder="John"
-              name="nombre"
+              name="username"
               onChange={handleChange}
             />
           </FloatingLabel>
@@ -68,37 +68,22 @@ export const Register = () => {
         </div>
 
         <div className="input-container">
-          <FloatingLabel controlId="apellido" label="Apellido" className="mb-3">
+          <FloatingLabel controlId="Password" label="Password" className="mb-3">
             <Form.Control
-              type="text"
+              type="password"
               placeholder="Doe"
-              name="apellido"
+              name="password"
               onChange={handleChange}
             />
           </FloatingLabel>
         </div>
 
         <div className="input-container">
-          <FloatingLabel
-            controlId="usuario"
-            label="Nombre de Usuario"
-            className="mb-3"
-          >
-            <Form.Control
-              type="text"
-              placeholder="example123"
-              name="usuario"
-              onChange={handleChange}
-            />
-          </FloatingLabel>
-        </div>
-
-        <div className="input-container">
-          <FloatingLabel controlId="correo" label="Correo" className="mb-3">
+          <FloatingLabel controlId="Email" label="Email" className="mb-3">
             <Form.Control
               type="email"
               placeholder="name@example.com"
-              name="correo"
+              name="email"
               onChange={handleChange}
             />
           </FloatingLabel>
@@ -106,21 +91,21 @@ export const Register = () => {
 
         <div className="input-container">
           <FloatingLabel
-            controlId="contrasenia"
-            label="Contraseña"
+            controlId="phone"
+            label="Phone number"
             className="mb-3 password-input"
           >
             <Form.Control
-              type="password"
-              placeholder="name12312"
-              name="contrasenia"
+              type="text"
+              placeholder="1234567890"
+              name="phone"
               onChange={handleChange}
             />
           </FloatingLabel>
         </div>
 
         <button className="button-register" type="submit">
-        <Link className="Register" to={"/login"}>Regístrate</Link>
+        Regístrate
         </button>
 
       </Form>
