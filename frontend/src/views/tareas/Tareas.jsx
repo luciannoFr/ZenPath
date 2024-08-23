@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import "./tareas.css";
+import "./tareas.css"; 
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { userType } from "../../context/userTypes";
 
 export const Tareas = () => {
-  const [tareas, setTareas] = useState([]);
+  const [videos, setVideos] = useState([]);
 
   const { state, stateDispatch } = useContext(UserContext);
 
@@ -15,7 +15,7 @@ export const Tareas = () => {
     });
   };
 
-  const getTareas = async () => {
+  const getVideos = async () => {
     const req = await fetch("http://localhost:3000/tareas", {
       headers: {
         token: state.token,
@@ -25,63 +25,65 @@ export const Tareas = () => {
     const res = await req.json();
 
     if (req.ok) {
-      setTareas(res);
+      setVideos(res);
     } else {
       alert(res.msg);
     }
   };
 
   useEffect(() => {
-    getTareas();
+    getVideos();
   }, []);
 
-  return (
-    <main className="container mt-5">
-      <div className="d-flex justify-content-between mb-3">
-        <h1>Tareas</h1>
-        <div className="d-flex flex-row gap-2">
-          <Link
-            role="button"
-            to={"/tareas/nueva-tarea"}
-            className="btn btn-primary d-flex justify-content-center align-items-center"
-          >
-            Nueva Tarea
-          </Link>
+  const getEmbedUrl = (url) => {
+    const urlObj = new URL(url);
+    const videoId = urlObj.searchParams.get("v");
+    return `https://www.youtube.com/embed/${videoId}`;
+  };
 
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={() => logOut()}
-          >
+  return (
+    <main className="container">
+      <div className="header">
+        <h1>Videos</h1>
+        <div className="actions">
+          <Link to="/tareas/nueva-tarea" className="button">
+            Nuevo Video
+          </Link>
+          <button className="button" onClick={logOut}>
             Cerrar Sesión
           </button>
         </div>
       </div>
-      <table className="table table-bordered table-striped">
-        <thead className="thead-dark">
+      <table className="table">
+        <thead>
           <tr>
-            <th>Nombre</th>
+            <th>Título</th>
             <th>Descripción</th>
+            <th>Video</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {tareas.map((tarea, i) => (
+          {videos.map((video, i) => (
             <tr key={i}>
-              <td>{tarea.nombre}</td>
-              <td>{tarea.descripcion}</td>
-
-              <td className="d-flex gap-2">
-                <Link
-                  to={`editar-tarea/${tarea.id}`}
-                  className="btn btn-primary btn-sm"
-                >
+              <td>{video.Title}</td>
+              <td>{video.Description}</td>
+              <td>
+                <iframe
+                  width="200"
+                  height="150"
+                  src={getEmbedUrl(video.URL)}
+                  title={video.Title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </td>
+              <td className="actions">
+                <Link to={`editar-tarea/${video.VideoID}`} className="button">
                   Editar
                 </Link>
-                <Link
-                  to={`eliminar-tarea/${tarea.id}`}
-                  className="btn btn-danger btn-sm"
-                >
+                <Link to={`eliminar-tarea/${video.VideoID}`} className="button delete">
                   Eliminar
                 </Link>
               </td>

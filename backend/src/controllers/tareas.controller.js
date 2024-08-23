@@ -4,20 +4,25 @@ import { validarJWT } from "../helpers/validarJWT.js";
 export const obtenerTareas = async (req, res) => {
   const connection = await connectDB();
 
-  const token = req.headers.token;
-  const usuario = await validarJWT(token);
+  // Comentamos las líneas que validan el token y la autorización
+  // const token = req.headers.token;
+  // const usuario = await validarJWT(token);
 
-  if (!usuario)
-    return res.status(403).json({
-      msg: "No estas autorizado para realizar esta accion",
-    });
+  // if (!usuario) {
+  //   return res.status(403).json({
+  //     msg: "No estás autorizado para realizar esta acción",
+  //   });
+  // }
 
-  const [results] = await connection.query(
-    "SELECT * FROM TAREAS WHERE rela_id_usuario=?",
-    [usuario.id]
-  );
+  try {
+    // Modificamos la consulta para traer todos los videos
+    const [results] = await connection.query("SELECT VideoID, Title, URL, Description, CreatedAt FROM videos");
 
-  return res.json(results);
+    return res.json(results);
+  } catch (error) {
+    console.error("Error al obtener las tareas:", error);
+    return res.status(500).json({ msg: "Error al obtener las tareas" });
+  }
 };
 
 export const obtenerTarea = async (req, res) => {
@@ -33,7 +38,7 @@ export const obtenerTarea = async (req, res) => {
 };
 
 export const crearTarea = async (req, res) => {
-  const { nombre, descripcion } = req.body;
+  const { Title, Description, link } = req.body;
 
   // Tomamos el token desde los headers de la peticion de la siguiente manera:
   const token = req.headers.token;
@@ -56,9 +61,7 @@ export const crearTarea = async (req, res) => {
 
     // Ejecutamos la consulta de inserción.
     await connection.query(
-      "INSERT INTO TAREAS (nombre, descripcion, rela_id_usuario) VALUES (?,?,?)",
-      [nombre, descripcion, usuario.id]
-    );
+      "INSERT INTO `videos`(`Title`, `URL`, `Description`) VALUES (?,?,?)",[Title, link ,Description]);
 
     // Respondemos al cliente.
     res.json({
