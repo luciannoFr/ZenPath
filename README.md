@@ -49,6 +49,7 @@ Sigue estos pasos para instalar y ejecutar el proyecto localmente:
 
    ```bash
    cd ZenPath
+   cd frontend
    ```
 
 3. **Instala las dependencias:**
