@@ -1,0 +1,23 @@
+.eliminar-tarea-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.eliminar-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 500px;
+  text-align: center;
+  padding: 2%;
+  align-items: center;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.eliminar-card span {
+  font-size: 25px;
+  font-weight: 600;
+}
